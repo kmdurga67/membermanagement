@@ -52,7 +52,6 @@ export class AppComponent implements OnInit {
     this.http.get('http://localhost:3000/members').subscribe({
       next: (members: any) => {
         this.submittedMembers = members;
-        console.log(this.submittedMembers);
       },
       error: (error) => {
         console.error('Error fetching members:', error);
@@ -67,9 +66,9 @@ export class AppComponent implements OnInit {
       this.http.post('http://localhost:3000/members', formData, { responseType: 'json' }).subscribe({
         next: (response) => {
           alert('Member registered successfully!');
-          this.submittedMembers.push(formData); // Add new member to the table
-          this.memberForm.reset(); // Reset the form
-          this.generateMemberId(); // Regenerate Member ID
+          this.submittedMembers.push(formData);
+          this.memberForm.reset(); 
+          this.generateMemberId();
         },
         error: (error) => {
           console.error('Error occurred:', error);

@@ -1,68 +1,85 @@
-<form [formGroup]="memberForm" (ngSubmit)="onSubmit()">
-  <h2>Register New Member</h2>
+<div class="container">
+  <form [formGroup]="memberForm" (ngSubmit)="onSubmit()" class="form-card">
+    <h2>Register New Member</h2>
 
-  <div>
-    <label for="memberId">Member ID</label>
-    <input id="memberId" formControlName="memberId" readonly />
-  </div>
+    <div class="form-group">
+      <label for="memberId">Member ID</label>
+      <input id="memberId" formControlName="memberId" readonly />
+    </div>
 
-  <div>
-    <label for="memberName">Member Name</label>
-    <input id="memberName" formControlName="memberName" placeholder="Enter full name" required />
-  </div>
+    <div class="form-group">
+      <label for="memberName">Member Name</label>
+      <input id="memberName" formControlName="memberName" placeholder="Enter full name" required />
+      <small *ngIf="memberForm.get('memberName')?.touched && memberForm.get('memberName')?.invalid" class="error">
+        Name is required.
+      </small>
+    </div>
 
-  <div>
-    <label for="memberAddress">Address</label>
-    <textarea id="memberAddress" formControlName="memberAddress" placeholder="Enter address" required></textarea>
-  </div>
+    <div class="form-group">
+      <label for="memberAddress">Address</label>
+      <textarea id="memberAddress" formControlName="memberAddress" placeholder="Enter address" required></textarea>
+      <small *ngIf="memberForm.get('memberAddress')?.touched && memberForm.get('memberAddress')?.invalid" class="error">
+        Address is required.
+      </small>
+    </div>
 
-  <div>
-    <label for="joiningDate">Joining Date</label>
-    <input
-      type="date"
-      id="joiningDate"
-      formControlName="joiningDate"
-      (change)="calculateRenewalDate()"
-      required
-    />
-  </div>
+    <div class="form-group">
+      <label for="joiningDate">Joining Date</label>
+      <input
+        type="date"
+        id="joiningDate"
+        formControlName="joiningDate"
+        (change)="calculateRenewalDate()"
+        required
+      />
+      <small *ngIf="memberForm.get('joiningDate')?.touched && memberForm.get('joiningDate')?.invalid" class="error">
+        Joining date is required.
+      </small>
+    </div>
 
-  <div>
-    <label for="memberType">Member Type</label>
-    <select id="memberType" formControlName="memberType">
-      <option *ngFor="let type of memberTypes" [value]="type">{{ type }}</option>
-    </select>
-  </div>
+    <div class="form-group">
+      <label for="memberType">Member Type</label>
+      <select id="memberType" formControlName="memberType" required>
+        <option value="" disabled selected>Select a member type</option>
+        <option *ngFor="let type of memberTypes" [value]="type">{{ type }}</option>
+      </select>
+      <small *ngIf="memberForm.get('memberType')?.touched && memberForm.get('memberType')?.invalid" class="error">
+        Member type is required.
+      </small>
+    </div>
 
-  <div>
-    <label for="renewalDate">Next Renewal Date</label>
-    <input id="renewalDate" formControlName="renewalDate" readonly />
-  </div>
+    <div class="form-group">
+      <label for="renewalDate">Next Renewal Date</label>
+      <input id="renewalDate" formControlName="renewalDate" readonly />
+    </div>
 
-  <button type="submit">Register</button>
-  <button type="button" (click)="cancelForm()">Cancel</button>
-</form>
+    <div class="button-group">
+      <button type="submit" [disabled]="memberForm.invalid">Register</button>
+      <button type="button" class="cancel" (click)="cancelForm()">Cancel</button>
+    </div>
+  </form>
 
-<h3>Registered Members</h3>
-<table *ngIf="submittedMembers.length > 0" border="1">
-  <thead>
-    <tr>
-      <th>Member ID</th>
-      <th>Name</th>
-      <th>Address</th>
-      <th>Joining Date</th>
-      <th>Member Type</th>
-      <th>Next Renewal Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let member of submittedMembers">
-      <td>{{ member.memberId }}</td>
-      <td>{{ member.memberName }}</td>
-      <td>{{ member.memberAddress }}</td>
-      <td>{{ member.joiningDate }}</td>
-      <td>{{ member.memberType }}</td>
-      <td>{{ member.renewalDate }}</td>
-    </tr>
-  </tbody>
-</table>
+  <h3 class="registered-title">Registered Members</h3>
+  <table *ngIf="submittedMembers.length > 0" class="members-table">
+    <thead>
+      <tr>
+        <th>Member ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Joining Date</th>
+        <th>Member Type</th>
+        <th>Next Renewal Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let member of submittedMembers">
+        <td>{{ member.memberId }}</td>
+        <td>{{ member.memberName }}</td>
+        <td>{{ member.memberAddress }}</td>
+        <td>{{ member.joiningDate | date:'shortDate' }}</td>
+        <td>{{ member.memberType }}</td>
+        <td>{{ member.renewalDate | date:'shortDate' }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
